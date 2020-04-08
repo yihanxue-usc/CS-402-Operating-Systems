@@ -527,13 +527,11 @@ do_waitpid(pid_t pid, int options, int *status)
 void
 do_exit(int status)
 {
-        //NOT_YET_IMPLEMENTED("PROCS: do_exit");
-        kthread_t *child_thread;
-        list_iterate_begin(&curproc->p_threads, child_thread, kthread_t, kt_plink){
-                child_thread->kt_cancelled=1;
+    kthread_t *pThread = NULL;
+    list_iterate_begin(&curproc->p_threads, pThread, kthread_t, kt_plink){
+                pThread->kt_cancelled = 1;
                 dbg(DBG_PRINT, "(GRADING1C)\n");   
-        }list_iterate_end();
-        dbg(DBG_PRINT, "(GRADING1C)\n"); 
-        kthread_exit((void *)status);
-        panic("weenix returned after kthread_exit()!!! BAD!!!\n");
+    }list_iterate_end();
+    dbg(DBG_PRINT, "(GRADING1C)\n");
+    kthread_exit(&status);
 }
